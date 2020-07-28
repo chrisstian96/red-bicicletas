@@ -1,0 +1,22 @@
+extends ../layout
+
+block content
+  .container.p-2
+    h1 Ingresar Bicicleta Nueva
+    form(methods="POST" accion="bicicletas/create")
+      .form-group
+         label(for='id') #ID
+         input#exampleInputEmail1.form-control(type='text' name="id" placeholder='Ingresa el id')
+      .form-group
+         label(for='color') Color
+         input#exampleInputEmail1.form-control(type='text' name="color" placeholder='Ingresa el color de la bicicleta')
+      .form-group
+         label(for='modelo') Modelo
+         input#exampleInputPassword1.form-control(type='text' placeholder='Ingresa el modelo')
+      .form-group
+         label(for='lat') Latitud
+         input#exampleInputPassword1.form-control(type='number' name="lat" placeholder='Ingresa la latitud')
+      .form-group
+         label(for='lgn') Latitud
+         input#exampleInputPassword1.form-control(type='number' name="lgn" placeholder='Ingresa la longitud')
+      button.btn.btn-primary(type='submit') Enviar
