@@ -11,14 +11,15 @@ block content
       #navbarResponsive.collapse.navbar-collapse
         ul.navbar-nav.ml-auto
           li.nav-item
-            a.nav-link.js-scroll-trigger(href='#about') Home
+            a.nav-link.js-scroll-trigger(href='#home') Home
           li.nav-item
             a.nav-link.js-scroll-trigger(href='#projects') Bicicletas
           li.nav-item
             a.nav-link.js-scroll-trigger(href='#signup') Contactanos
           li.nav-item
-            a.nav-link.js-scroll-trigger(href='#about') A cerca de
-            
+            a.nav-link.js-scroll-trigger(type='button', data-toggle='modal', data-target='#acerca') Acerca de       
+              include about.pug
+
   // Masthead
   header.masthead
     .container.d-flex.h-100.align-items-center

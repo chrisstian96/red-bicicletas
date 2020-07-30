@@ -1,7 +1,9 @@
 extends ../layout
 
 block content
-  .container.p-2
+  .container.p-3
+    a(href='/bicicletas/create').btn.btn-secondary.m-2 Nueva Bicicleta
+
     table.table.table-striped
       thead
         tr
@@ -11,7 +13,22 @@ block content
           th(scope='col') Ubicacion
           th(scope='col') Acciones
         tbody
-          each bici in bicis
+          if bicis 
+            each bici in bicis
+              tr
+                th(scope='row')
+                  = bici.id
+                td= bici.color
+                td= bici.modelo
+                td= bici.ubicacion
+                td
+                  button.btn.btn-success.text-white.btn-sm.m-1 Mostrar
+                  a(href=`bicicletas/${bici.id}/update`).btn.btn-warning.text-white.btn-sm.m-1 Editar
+                  form.inline(method='POST' action='bicicletas/'+bici.id+'/delete')
+                    input(type='hidden' name="id" value=bici.id)
+                    button.btn.btn-danger.text-white.btn-sm.m-1(type='submit' name='submit_param' value='submit_value') Eliminar
+          
+          else if bici
             tr
               th(scope='row')
                 = bici.id
@@ -19,7 +36,18 @@ block content
               td= bici.modelo
               td= bici.ubicacion
               td
-                button.btn.btn-success.text-white.btn-sm Mostrar
+                button.btn.btn-success.text-white.btn-sm.m-1 Mostrar
+                button.btn.btn-warning.text-white.btn-sm.m-1 Editar
+                form.inline(method='POST' action='bicicletas/'+bici.id+'/delete')
+                  input(type='hidden' name="id" value=bici.id)
+                  button.btn.btn-danger.text-white.btn-sm.m-1(type='submit' name='submit_param' value='submit_value') Eliminar
+          else  
+            .bg-secondary.p-4.text-white No se encontro ningun registro con ese id
+            
+         
+   
+         
+
 
     
                 

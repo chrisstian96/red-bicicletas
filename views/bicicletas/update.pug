@@ -1,0 +1,19 @@
+extends ../layout
+
+block content
+  .container.p-2
+    h1 Actualizar bicicleta 
+    form(method="POST" accion=`/bicicleta/${bici.id}/update`)
+      .form-group
+         label(for='color') Color
+         input.form-control(type='text' value=bici.color name="color" placeholder='Ingresa el color de la bicicleta')
+      .form-group
+         label(for='modelo') Modelo
+         input.form-control(type='text' value=bici.modelo name="modelo" placeholder='Ingresa el modelo')
+      .form-group
+         label(for='lat') Latitud
+         input.form-control(type='number' value=bici.ubicacion[0] name="lat" placeholder='Ingresa la latitud')
+      .form-group
+         label(for='lgn') Longitud
+         input.form-control(type='number' value=bici.ubicacion[1] name="log" placeholder='Ingresa la longitud')
+      button.btn.btn-primary(type='submit') Enviar
