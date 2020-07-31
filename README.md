@@ -1,6 +1,6 @@
 # red-bicicletas
 
-#Descripción simple del proyecto
+#Descripción simple del proyecto practico de coursera
 
 Proyecto web de tiendas de bicicletas, hecho con node.js, mongodb y express.
 
