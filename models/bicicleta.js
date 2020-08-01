@@ -27,13 +27,13 @@ Bicicleta.removeById = function (aBiciId) {
     }
   }
 };
-let a = new Bicicleta(3, "rojo", "urbana", [3.476, -76.53]);
+/*let a = new Bicicleta(3, "rojo", "urbana", [3.476, -76.53]);
 let b = new Bicicleta(2, "blanca", "urbana", [3.472, -76.537]);
 let c = new Bicicleta(1, "verde", "urbana", [3.470, -76.531]);
 
 Bicicleta.add(a);
 Bicicleta.add(b);
-Bicicleta.add(c);
+Bicicleta.add(c);*/
 
 
 module.exports = Bicicleta;
