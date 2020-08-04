@@ -3,6 +3,20 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const mongoose = require('mongoose');
+const db = mongoose.connection;
+
+
+
+mongoose.connect('mongodb://localhost/Red-bicicletas',{
+  useNewUrlParser: true, 
+  useUnifiedTopology: true,
+  useFindAndModify: false 
+});
+db.on('error',console.error.bind(console, 'Error en la conexión'));
+db.once('open',function(){
+  console.log("mongodb esta funcionando correctamente!");
+})
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');

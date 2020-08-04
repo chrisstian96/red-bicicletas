@@ -1,5 +1,5 @@
 const Bicicleta = require("../../models/bicicleta");
-const { bicicleta_delete_post } = require("../../controllers/bicicleta");
+
 beforeEach(() => {
   Bicicleta.allBicis = [];
 });
@@ -44,9 +44,16 @@ describe("Bicicleta.Delete", () => {
 
   it("Debe eliminar la bicicleta agregada actualmente", () => {
     var aBici = new Bicicleta(1, "Verde", "Urbana");
-    
-    Bicicleta.add(aBici);
+    var aBici2 = new Bicicleta(2, "Roja", "Urbana");
+    var aBici3 = new Bicicleta(3, "Azul", "Urbana");
 
+
+    Bicicleta.add(aBici);
+    Bicicleta.add(aBici2);
+    Bicicleta.add(aBici3);
+
+    var  cantidad_bicicletas = Bicicleta.allBicis.length;
+  
     expect(Bicicleta.allBicis.length).toBe(cantidad_bicicletas);
    
 
