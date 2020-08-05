@@ -1,39 +1,47 @@
-var Bicicleta = function (id, color, modelo, ubicacion) {
-  this.id = id;
-  this.color = color;
-  this.ubicacion = ubicacion;
-  this.modelo = modelo;
+const {Schema, model} = require('mongoose');
+
+const bicicletaSchema = new Schema({
+      code: Number,
+      color: String,
+      modelo: String,
+      ubicacion: {
+        type: [Number],
+        index: { 
+          type: '2dsphere',
+          sparse: true
+        }
+      }
+});
+
+bicicletaSchema.statics.createInstance = function(code, color, modelo, ubicacion){
+  return new this({
+    code: code,
+    color: color,
+    modelo: modelo,
+    ubicacion: ubicacion
+  });
+
 };
 
-Bicicleta.prototype.toString = function () {
-  return `id: ${this.id} \n modelo: ${this.modelo} \n color: ${this.color} \n ubicacion: ${ubicacion}`;
-};
-Bicicleta.allBicis = [];
-Bicicleta.add = function (aBici) {
-  Bicicleta.allBicis.push(aBici);
-};
-Bicicleta.findById = function (aBiciId) {
-  var aBici = Bicicleta.allBicis.find((x) => x.id == aBiciId);
-  if (aBici) return aBici;
-  else var noFound = new Error(`No existe una bicicleta con el id ${aBiciId}`);
-  console.log(noFound);
+bicicletaSchema.methods.toString = function () {
+  return `code: ${this.id} \n modelo: ${this.modelo} \n color: ${this.color} \n ubicacion: ${ubicacion}`;
 };
 
-Bicicleta.removeById = function (aBiciId) {
-  for (var i = 0; i < Bicicleta.allBicis.length; i++) {
-    if (Bicicleta.allBicis[i].id == aBiciId) {
-      Bicicleta.allBicis.splice(i, 1);
-      break;
-    }
-  }
+bicicletaSchema.statics.allBicis = function(cb){
+    return this.find({},cb);
 };
-/*let a = new Bicicleta(3, "rojo", "urbana", [3.476, -76.53]);
-let b = new Bicicleta(2, "blanca", "urbana", [3.472, -76.537]);
-let c = new Bicicleta(1, "verde", "urbana", [3.470, -76.531]);
 
-Bicicleta.add(a);
-Bicicleta.add(b);
-Bicicleta.add(c);*/
+bicicletaSchema.statics.add = function(aBici, cb){
+  this.create(aBici, cb);
+};
+
+bicicletaSchema.statics.findByCode = function(aCode, cb){
+  return this.findOne({ code: aCode }, cb);
+}
+
+bicicletaSchema.statics.deleteByCode = function(aCode, cb){
+  return this.deleteOne({ code: aCode }, cb);
+}
 
 
-module.exports = Bicicleta;
+module.exports = model('Bicicleta',bicicletaSchema);

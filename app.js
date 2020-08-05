@@ -6,22 +6,22 @@ var logger = require('morgan');
 const mongoose = require('mongoose');
 const db = mongoose.connection;
 
-
-
 mongoose.connect('mongodb://localhost/Red-bicicletas',{
   useNewUrlParser: true, 
   useUnifiedTopology: true,
   useFindAndModify: false 
 });
+
 db.on('error',console.error.bind(console, 'Error en la conexión'));
 db.once('open',function(){
   console.log("mongodb esta funcionando correctamente!");
-})
+});
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var bicicletasRouter = require('./routes/bicicletas');
-var bicicletaApiRouter = require('./routes/api/bicicleta')
+var bicicletaApiRouter = require('./routes/api/bicicleta');
+var usuarioApiRouter = require('./routes/api/usuario');
 
 var app = express();
 
@@ -40,6 +40,10 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/bicicletas', bicicletasRouter);
 app.use('/api/bicicletas', bicicletaApiRouter);
+app.use('/api/usuarios', usuarioApiRouter);
+
+
+
 
 
 // catch 404 and forward to error handler

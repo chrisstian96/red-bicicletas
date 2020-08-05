@@ -1,29 +1,47 @@
 const Bicicleta = require("../../models/bicicleta");
 const request = require("request");
 const server = require("../../bin/www");
+const base_url = "http://localhost:3000/api/bicicletas";
 
-beforeEach(() => {
-  console.log('testeando...');
-  Bicicleta.allBicis = [];
-});
 
-describe("Bicicleta API", () => {
-    describe("GET BICICLETAS /", () => {
-      it("Status 200", () => {
-        expect(Bicicleta.allBicis.length).toBe(0);
+describe("Testing Bicicletas", function () {
+    beforeEach(function (done) {
+      const mongoDB = "mongodb://localhost/testdb";
+      const db = mongoose.connection;
   
-        var a = Bicicleta(1, "Negro", "Urbana", [-34.564, 72.89]);
-        Bicicleta.add(a);
+      mongoose.connect(mongoDB, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useFindAndModify: false,
+      });
   
-        request.get(
-          "http://localhost:3000/api/bicicletas",
-          (error, response, body) => {
-            expect(response.statusCode).toBe(200);
-          }
-        );
+      db.on("error", console.error.bind(console, "Error en la conexión"));
+      db.once("open", function () {
+        console.log("mongodb esta funcionando correctamente!");
+        done();
       });
     });
-  });
+    afterEach(function (done) {
+      Bicicleta.deleteMany({}, function (err, success) {
+        if (err) console.log(err);
+        done();
+      });
+    });
+    describe("GET BICICLETAS /", () => {
+        it("Status 200", (done) => {
+          request.get( base_url,
+             (error, response, body) => {
+                 var result = JSON.parse(body);
+                 expect(response.statusCode).toBe(200);
+                 expect(result.bicicletas.length).toBe(0);
+                    done();
+            });          
+        });
+      });
+});
+
+ 
+ 
 
 describe("POST BICICLETAS /create", () => {
   it("Status 200", (done) => {
@@ -33,12 +51,17 @@ describe("POST BICICLETAS /create", () => {
     request.post(
       {
         headers: headers,
-        url: "http://localhost:3000/api/bicicletas/create",
+        url: `${base_url}/create`,
         body: aBici,
       },
       function (error, response, body) {
         expect(response.statusCode).toBe(200);
-        expect(Bicicleta.findById(10).color).toBe("rojo");
+        var bici = JSON.parse(body).Bicicleta;
+        console.log(bici);
+        expect(bici.color).toBe("rojo");
+        expect(bici.ubicacion[0]).toBe(-34);
+        expect(bici.ubicacion[1]).toBe(-54);
+
         done();
       }
     );
@@ -49,15 +72,20 @@ describe("POST BICICLETAS /create", () => {
 
 describe("Bicicleta API delete", () => {
   it("Delete 204", () => {
-    expect(Bicicleta.allBicis.length).toBe(0);
 
-    var a = Bicicleta(1, "Negro", "Urbana", [-34.564, 72.89]);
-    Bicicleta.add(a);
+    var a = Bicicleta.createInstance(1, "Negro", "Urbana", [-34.564, 72.89]);
+    Bicicleta.add(a, function(err, newBici){
+        var headers = { "content-type": "application/json" };
+        var idBici = a.id;
+     });
 
-    request.delete(
-      "http://localhost:3000/api/bicicletas/delete",
-      (error, response, body) => {
-        expect(request.statusCode).toBe(204);      }
+    request.delete({
+      headers: headers,
+      url: `${base_url}/delete`,
+      body: idBici
+    }, function(err, response,body ){
+      expect(response.statusCode).toBe(204);
+    }
     );
   });
 });
